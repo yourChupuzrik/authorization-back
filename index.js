@@ -24,13 +24,13 @@ app.post('/auth/register', registerValidation, async (req, res) => {
 
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const hash = await bcrypt.hash(password, salt);
 
     const doc = new UserModel({
       email: req.body.email,
       fullName: req.body.fullName,
       avatarUrl: req.body.avatarUrl,
-      passwordHash,
+      passwordHash: hash,
     });
 
     const user = await doc.save();
@@ -43,8 +43,10 @@ app.post('/auth/register', registerValidation, async (req, res) => {
       },
     );
 
+      const { passwordHash, ...userData } = user._doc;
+
     res.json({
-      ...user,
+      ...userData,
       token,
     });
   } catch (err) {
