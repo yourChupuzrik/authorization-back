@@ -45,7 +45,7 @@ app.post('/auth/login', async (req, res) => {
       token,
     });
 
-  } catch (error) {
+  } catch (err) {
     console.log(err);
     res.status(500).json({
       message: 'Не удалось авторизоваться',
@@ -92,6 +92,14 @@ app.post('/auth/register', registerValidation, async (req, res) => {
     res.status(500).json({
       message: 'Не удалось зарегистрироваться',
     });
+  }
+});
+
+app.get('/', (req, res) => {
+  try {
+    
+  } catch (err) {
+    
   }
 });
 
