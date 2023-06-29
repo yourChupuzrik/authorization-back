@@ -1,11 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { registerValidation } from './validations/auth.js';
+import { registerValidation, loginValidation, postCreateValidation } from './validadtions.js';
 import checkAuth from './utils/checkAuth.js'
 import * as UserController from './controllers/UserController.js'
+import * as PostController from './controllers/PostController.js'
 
 mongoose
-  .connect('mongodb+srv://yourchupuzrik:qwerty12345@1.mszkjk1.mongodb.net/man?retryWrites=true&w=majority')
+  .connect('mongodb+srv://yourchupuzrik:wwwwww@cluster0.9paqapq.mongodb.net/?retryWrites=true&w=majority')
   .then(() => console.log('DB ok'))
   .catch((err) => console.log('DB error', err));
 
@@ -13,12 +14,18 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/auth/login', UserController.login);
+app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
+app.get('/posts', PostController.getAll);
+app.post('/posts', checkAuth, postCreateValidation, PostController.create);
+app.get('/posts/:id', PostController.getOne);
+app.delete('/posts/:id', checkAuth, PostController.remove);
+app.patch('/posts/:id', checkAuth, PostController.update);
+
 app.listen(4444, (err) => {
-    if (err) {
+    if (err)  {
         return console.log(err);
     }
 
