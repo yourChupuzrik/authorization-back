@@ -4,6 +4,7 @@ import { registerValidation, loginValidation, postCreateValidation } from './val
 import multer from 'multer';
 import { UserController, PostController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
+import cors from 'cors';
 
 mongoose
   .connect('mongodb+srv://yourchupuzrik:wwwwww@cluster0.9paqapq.mongodb.net/?retryWrites=true&w=majority')
@@ -24,6 +25,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.json());
+app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
